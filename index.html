@@ -12,12 +12,73 @@
         .serif-en { font-family: 'Playfair Display', serif; }
         .nav-link { font-size: 0.85rem; letter-spacing: 0.1em; transition: all 0.3s; }
         .nav-link:hover { opacity: 0.5; border-bottom: 1px solid #3C322C; }
-        /* 强制首屏适配，防止显示不全 */
         .hero-section { min-height: 90vh; display: flex; align-items: center; overflow: hidden; }
         .hero-img-box { max-height: 500px; width: 100%; object-fit: cover; }
+
+        /* --- 品牌故事页底色 --- */
+        #story {
+            position: relative;
+            background-color: #3C322C; 
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .story-glass-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95); 
+            padding: 4rem 3rem;
+            max-width: 800px;
+            width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .story-inner-border {
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px solid #3C322C;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        #cart-sidebar {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #cart-sidebar.translate-x-full {
+            transform: translateX(100%);
+        }
+        #cart-sidebar:not(.translate-x-full) {
+            transform: translateX(0);
+        }
+        .cart-overlay {
+            transition: opacity 0.4s ease;
+        }
     </style>
 </head>
-<body>
+<body class="relative">
+
+    <div id="cart-overlay" class="cart-overlay fixed inset-0 bg-black/50 z-[100] opacity-0 pointer-events-none" onclick="toggleCart()"></div>
+
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white z-[101] translate-x-full shadow-2xl flex flex-col">
+        <div class="flex justify-between items-center p-8 border-b border-gray-100">
+            <h3 class="text-xl serif-en italic">Your Cart</h3>
+            <button onclick="toggleCart()" class="text-xs tracking-widest opacity-50 hover:opacity-100">[ CLOSE ]</button>
+        </div>
+        <div class="flex-grow p-8 space-y-6 overflow-y-auto">
+            <p class="text-sm opacity-50 chinese-serif text-center py-20">您的购物车是空的。</p>
+        </div>
+        <div class="p-8 border-t border-gray-100 space-y-6 bg-[#F8F7F5]">
+            <div class="flex justify-between text-sm">
+                <span>小计</span>
+                <span class="font-light italic">¥ 0.00</span>
+            </div>
+            <button class="w-full bg-[#3C322C] text-white py-4 text-xs tracking-widest uppercase hover:bg-black transition">
+                前往结算 / Checkout
+            </button>
+        </div>
+    </div>
 
     <nav class="fixed top-0 w-full flex justify-between items-center px-8 py-6 bg-[#F8F7F5]/90 backdrop-blur-sm z-50">
         <div class="text-xl font-bold tracking-tighter serif-en">1/d ONE MOMENT</div>
@@ -27,7 +88,9 @@
             <a href="#store" class="nav-link">商店</a>
             <a href="#about" class="nav-link">关于我们</a>
         </div>
-        <div class="text-sm border-b border-[#3C322C]">🛒 购物车 0</div>
+        <button onclick="toggleCart()" class="text-sm border-b border-[#3C322C] nav-link cursor-pointer">
+            🛒 购物车 0
+        </button>
     </nav>
 
     <section id="home" class="hero-section px-8 pt-20">
@@ -43,55 +106,49 @@
                 </div>
             </div>
             <div class="relative">
-                <img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&q=80" 
-                     class="hero-img-box shadow-xl grayscale-[0.2]" alt="皮影灯展示">
+                <img src="channy2/1.png" class="hero-img-box shadow-xl grayscale-[0.2]" alt="皮影灯展示">
                 <div class="absolute -bottom-4 -right-4 w-24 h-24 border-r-2 border-b-2 border-[#3C322C]"></div>
             </div>
         </div>
     </section>
 
-    <section id="story" class="py-32 bg-white px-8">
-        <div class="max-w-3xl mx-auto">
+    <section id="story" class="py-32 px-8">
+        <div class="story-glass-card">
+            <div class="story-inner-border"></div>
             <div class="text-center mb-16">
-                <span class="serif-en italic text-gray-400 text-xl">The Story</span>
+                <span class="serif-en italic text-gray-400 text-xl italic">The Story</span>
                 <h2 class="text-3xl mt-2 tracking-[0.3em]">匠心传承 · 光影叙事</h2>
             </div>
-            <div class="space-y-8 leading-loose text-gray-600 font-light text-center">
-                <p>
-                    皮影，是中国民间最古老的光影艺术。
-                     </p>
-                 <p>在过去，它是一场隔着帷幕的戏；</p>
-                  <p>在今天，我们希望它是一盏能照亮你生活的灯。</p> 
-                </p>
-                <p>
-                    <strong>One Moment (1/d)</strong> 诞生于对中式浪漫的执念。</p>
-                    <p>我们走访非遗传承人，</p>
-                    <p>将细腻的牛皮雕刻工艺，</p>
-                    <p>与现代建筑感底座相结合。</p>
-                </p>
-                <p class="text-black font-normal">
-                    <p>每一盏灯亮起时，</p>
-                    <p>墙上的影子都是一场跨越千年的对话。</p>
-                    <p>我们不只做灯，我们做的是“文化的二次觉醒”。</p>
+            <div class="space-y-8 leading-loose text-gray-600 font-light text-center relative z-10">
+                <p>皮影，是中国民间最古老的光影艺术。</p>
+                <p>在过去，它是一场隔着帷幕的戏；</p>
+                <p>在今天，我们希望它是一盏能照亮你生活的灯。</p> 
+                <p><strong>One Moment (1/d)</strong> 诞生于对中式浪漫的执念。</p>
+                <p>我们走访非遗传承人，将细腻的牛皮雕刻工艺，与现代建筑感底座相结合。</p>
+                <p class="text-black font-normal text-center">
+                    每一盏灯亮起时，墙上的影子都是一场跨越千年的对话。<br>
+                    我们不只做灯，我们做的是“文化的二次觉醒”。
                 </p>
                 <div class="flex justify-center pt-10">
-                    <div class="grid grid-cols-4 gap-4 text-[10px] tracking-widest text-gray-400 uppercase">
+                    <div class="grid grid-cols-4 gap-8 text-[10px] tracking-[0.4em] text-gray-400 uppercase">
+                        <div>1 本体</div>
+                        <div>/ 光程</div>
+                        <div>d 影变</div>
+                        <div>● 察觉</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-  <section id="store" class="py-32 px-8 md:px-20 max-w-[1400px] mx-auto">
+    <section id="store" class="py-32 px-8 md:px-20 max-w-[1400px] mx-auto">
         <div class="flex justify-between items-end mb-20">
             <h2 class="text-2xl font-extralight tracking-[0.4em]">产品热销 / Collection</h2>
         </div>
-        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
-            <div class="group cursor-pointer">
+            <a href="https://one-moment.odoo.com/shop/%E9%A3%9E%E9%BE%99%E5%9C%A8%E5%A4%A9%E7%BB%8F%E5%85%B8%E6%AC%BE-2" class="group cursor-pointer block">
                 <div class="aspect-[3/4] overflow-hidden bg-white mb-8 p-12">
-                    <img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&q=80" 
-                         class="w-full h-full object-contain group-hover:scale-105 transition duration-700">
+                    <img src="channy2/jimeng-2026-04-25-6307-新中式禅意茶桌，浅木色，暖光氛围，山水朦胧背景，干净素雅，高级文创感，可直接放置....png" class="w-full h-full object-contain group-hover:scale-105 transition duration-700">
                 </div>
                 <div class="flex justify-between items-start">
                     <div>
@@ -100,12 +157,11 @@
                     </div>
                     <p class="text-sm font-light italic">¥ 79.00</p>
                 </div>
-            </div>
+            </a>
 
-            <div class="group cursor-pointer">
+            <a href="https://one-moment.odoo.com/shop/%E9%94%A6%E9%B2%A4%E8%B7%83%E8%BF%81-3" class="group cursor-pointer block">
                 <div class="aspect-[3/4] overflow-hidden bg-white mb-8 p-12">
-                    <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80" 
-                         class="w-full h-full object-contain group-hover:scale-105 transition duration-700">
+                    <img src="channy2/螢幕截圖 2026-04-25 20.45.03.png" class="w-full h-full object-contain group-hover:scale-105 transition duration-700">
                 </div>
                 <div class="flex justify-between items-start">
                     <div>
@@ -114,13 +170,11 @@
                     </div>
                     <p class="text-sm font-light italic">¥ 99.00</p>
                 </div>
-            </div>
+            </a>
 
-            <div class="group cursor-pointer">
+            <a href="https://one-moment.odoo.com/shop/%E5%B1%B1%E6%B5%B7%E7%BB%8F%E5%85%A8%E6%99%AF-%E7%A4%BC%E7%9B%92%E8%A3%85-4" class="group cursor-pointer block">
                 <div class="aspect-[3/4] overflow-hidden bg-white mb-8 p-12">
-                    <div class="w-full h-full bg-[#EAE8E4] flex items-center justify-center grayscale">
-                         <span class="text-[10px] tracking-widest opacity-30">LIMITED EDITION</span>
-                    </div>
+                    <img src="channy2/jimeng-2026-04-25-2561-做一个山海经全景 · 礼盒装的皮影文创产品图.png" class="w-full h-full object-contain group-hover:scale-105 transition duration-700">
                 </div>
                 <div class="flex justify-between items-start">
                     <div>
@@ -129,14 +183,14 @@
                     </div>
                     <p class="text-sm font-light italic">¥ 139.00</p>
                 </div>
-            </div>
+            </a>
         </div>
     </section>
 
     <section id="about" class="py-24 bg-[#3C322C] text-[#F8F7F5] px-8">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20">
             <div>
-              <h2 class="text-3xl serif-en italic italic">Philosophy</h2>
+              <h2 class="text-3xl serif-en italic">Philosophy</h2>
                 <p class="font-extralight leading-loose opacity-60 text-sm">
                     我们不只是在制造灯具，而是在重塑“光”的深度。<br>
                     One Moment 每一个作品都承载着对中国非遗艺术的敬畏。<br>
@@ -156,5 +210,20 @@
         © 2026 ONE MOMENT (1/d) STUDIO. ALL RIGHTS RESERVED.
     </footer>
 
+    <script>
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
 </body>
 </html>
